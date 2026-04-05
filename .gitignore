@@ -8,6 +8,7 @@ __pycache__/
 .env
 
 # Data exports
+sentiment_results.csv
 
 
 # OS

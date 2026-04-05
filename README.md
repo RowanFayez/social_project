@@ -1,4 +1,74 @@
-# Task 2: Robust Text Preprocessing & Data Refinement
+# Social Analytics Project
+
+---
+
+## Task 3: Sentiment Analysis & EDA
+
+### Overview
+
+`task3.py` performs sentiment analysis on the preprocessed Reddit political data produced by
+Task 2. It adds eight new columns to the dataset and prints a human-readable report to the
+terminal.
+
+Two independent methods are used and compared:
+
+| Method | Library | Scores |
+|--------|---------|--------|
+| **VADER** | NLTK `SentimentIntensityAnalyzer` | compound, pos, neu, neg |
+| **TextBlob** | TextBlob | polarity, subjectivity |
+
+VADER is specifically tuned for social-media text (handles punctuation, ALL CAPS, etc.) and is
+the primary classifier; TextBlob provides a second opinion and a subjectivity dimension.
+
+### Usage
+
+```bash
+# Run on the cleaned output from Task 2
+python task3.py --input cleaned.csv --output sentiment_results.csv
+
+# Choose a different text column (default: full_text_clean)
+python task3.py --input cleaned.csv --output sentiment_results.csv --text_column title_clean
+```
+
+### Arguments
+
+| Argument | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `--input` | ✓ | — | Path to input CSV (output of Task 2) |
+| `--output` | ✓ | — | Path for output CSV |
+| `--text_column` | | `full_text_clean` | Column to analyse |
+
+### Output Columns Added
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `vader_compound` | float [-1, 1] | Overall VADER sentiment score |
+| `vader_pos` | float [0, 1] | Proportion of positive tone |
+| `vader_neu` | float [0, 1] | Proportion of neutral tone |
+| `vader_neg` | float [0, 1] | Proportion of negative tone |
+| `vader_label` | str | `positive` / `neutral` / `negative` (compound ≥ 0.05 / ≤ -0.05) |
+| `tb_polarity` | float [-1, 1] | TextBlob polarity |
+| `tb_subjectivity` | float [0, 1] | TextBlob subjectivity (0 = objective, 1 = subjective) |
+| `tb_label` | str | `positive` / `neutral` / `negative` (polarity > 0.05 / < -0.05) |
+
+### Terminal Report
+
+The script prints:
+
+1. VADER and TextBlob sentiment distributions with bar charts
+2. Average compound score and subjectivity
+3. VADER sentiment broken down by political **category** (if the column is present)
+4. Top 5 most-positive and most-negative posts by compound score
+5. Agreement rate between the two methods
+
+### No Extra Dependencies
+
+`task3.py` relies only on packages already listed in `pyproject.toml`:
+`pandas`, `nltk` (VADER lexicon auto-downloaded on first run), and `textblob`.
+
+---
+
+## Task 2: Robust Text Preprocessing & Data Refinement
 
 ## Overview
 
@@ -230,12 +300,13 @@ The script gracefully handles:
 
 ```
 social_project/
-├── main.py                              # Main preprocessing pipeline script
+├── SocialProjectTask1.ipynb             # Task 1: Data collection via Reddit/NewsData APIs
+├── main.py                              # Task 2: Preprocessing pipeline script
+├── task3.py                             # Task 3: Sentiment analysis & EDA
 ├── README.md                            # This file
-├── reddit_political_posts.csv           # Input: Posts dataset
-├── reddit_political_comments.csv        # Input: Comments dataset
-├── reddit_political_posts_enhanced.csv  # Original enhanced dataset
-└── reddit_political_comments_enhanced.csv
+├── reddit_political_posts.csv           # Input: Posts dataset (raw)
+├── cleaned.csv                          # Intermediate: Cleaned posts from Task 2
+└── sentiment_results.csv                # Output: Posts with sentiment scores from Task 3
 ```
 
 ## Author
