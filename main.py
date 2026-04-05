@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 Task 2: Robust Text Preprocessing & Data Refinement
 A configurable preprocessing pipeline for Reddit political data
@@ -425,7 +424,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-=======
 import argparse 
 import re
 import string
@@ -583,4 +581,3 @@ def main():
 if __name__ == "__main__":
     main()
 
->>>>>>> 90f95e8a7e8e752f299eaccf0f77ddd3c2ad13f7
